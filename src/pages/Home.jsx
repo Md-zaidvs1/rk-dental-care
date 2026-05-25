@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, ShieldAlert, MapPin, Sparkles, Activity, Layers, Calendar, Phone, Syringe, ChevronRight, Mail } from 'lucide-react';
+import { Clock, ShieldAlert, MapPin, Sparkles, Activity, Layers, Calendar, Phone, Syringe, ChevronRight } from 'lucide-react';
 
 // Secure local imports for your background slider assets
 import bgSlide1 from '../assets/Royalty.webp';
@@ -9,21 +9,21 @@ import bgSlide5 from '../assets/bg-5.webp';
 import bgSlide6 from '../assets/bg-6.jpg';
 import bgSlide7 from '../assets/bg-7.avif';
 
-// Secure local import for your tooth water splash asset image
+// Secure local import for your main branding/overview images
+import rkDoctor from '../assets/rk.jpeg'; 
 import dentalEquipt from '../assets/dental-equipt.jpg';
 
-// The 4 core primary services displayed on the right column of the Home grid
 const homeFourServices = [
-  { id: "root-canal-treatment", name: "Root Canal Treatment", icon: Activity, desc: "Painless root salvages to clear deep interior root configurations safely." },
+  { id: "root-canal-treatment", name: "Root Canal Treatment", icon: Activity, desc: "Painless microscopic root salvages to clear deep interior root complexes." },
   { id: "dental-filling", name: "Dental Filling", icon: Sparkles, desc: "Restores tooth structure cleanly by safely removing minor dental decay channels." },
-  { id: "scaling-and-root-planing", name: "Scaling & Root Planing", icon: Syringe, desc: "Deep ultrasonic plaque removals below delicate gum lines." },
-  { id: "orthodontic-treatment", name: "Orthodontic Treatment", icon: Layers, desc: "High-quality alignment bracket braces or clear custom aligners to guide crooked teeth." }
+  { id: "scaling-and-root-planing", name: "Scaling & Root Planing", icon: Syringe, desc: "Deep ultrasonic plaque removals targeting sub-gingival calculus safely." },
+  { id: "orthodontic-treatment", name: "Orthodontic Treatment", icon: Layers, desc: "Premium alignment systems and clear aligners to guide crooked teeth." }
 ];
 
 export default function Home({ openModal }) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [hoveredServiceIdx, setHoveredServiceIdx] = useState(null);
   
-  // Array maps your active local files safely
   const localSlides = [
     bgSlide1, 
     bgSlide4, 
@@ -41,10 +41,10 @@ export default function Home({ openModal }) {
   }, [localSlides.length]);
 
   return (
-    <div className="bg-white min-h-screen font-sans antialiased flex flex-col">
+    <div className="bg-white min-h-screen font-sans antialiased w-full overflow-x-hidden">
       
-      {/* 1. Dynamic Hero Slideshow Area */}
-      <section className="relative min-h-[580px] md:min-h-[660px] bg-slate-950 flex items-center justify-center px-4 overflow-hidden">
+      {/* 1. Dynamic Hero Slideshow Area — Fixed top-padding metrics for mobile viewports */}
+      <section className="relative min-h-[500px] sm:min-h-[580px] md:min-h-[660px] bg-slate-950 flex items-center justify-center px-4 overflow-hidden">
         {localSlides.map((slideAsset, index) => (
           <div
             key={index}
@@ -54,200 +54,130 @@ export default function Home({ openModal }) {
             style={{ backgroundImage: `url(${slideAsset})` }}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-900/80 to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/90 to-transparent z-10"></div>
         
-        <div className="max-w-4xl mx-auto w-full relative z-20 text-center space-y-6 pt-12 pb-20">
-          <span className="bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest inline-block">
+        {/* Added responsive pt-24 padding to push content down on mobile views */}
+        <div className="max-w-4xl mx-auto w-full relative z-20 text-center space-y-6 pt-24 pb-24 md:pt-16 md:pb-20 px-2">
+          <span className="bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-3 py-1 md:px-4 md:py-1.5 rounded-full text-[10px] md:text-xs font-semibold uppercase tracking-widest inline-block">
             Estd. 2018 | 7 Years of Dental Excellence
           </span>
-          <h1 className="text-4xl md:text-6xl font-light text-white tracking-tight leading-tight">
+          <h1 className="text-3xl md:text-6xl font-light text-white tracking-tight leading-tight">
             Modern Achieve <br />
             <span className="font-bold text-cyan-400 drop-shadow-sm">Your Desired Perfect Smile</span>
           </h1>
-          <p className="text-slate-300 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-slate-300 text-xs md:text-base max-w-2xl mx-auto font-light leading-relaxed px-2">
             RK Dental Care delivers top-tier clinical accuracy across specialized root canal therapies, cosmetic restorations, and surgical management handled seamlessly under Dr. V. Radhakrishnan.
           </p>
           
           {/* Slide Indicators */}
-          <div className="flex justify-center gap-2 pt-4">
+          <div className="flex justify-center gap-2 pt-2">
             {localSlides.map((_, i) => (
-              <button 
-                key={i} 
-                onClick={() => setCurrentSlide(i)} 
-                className={`h-1.5 rounded-full transition-all duration-300 ${i === currentSlide ? 'w-8 bg-cyan-400' : 'w-1.5 bg-white/40 hover:bg-white/70'}`} 
-              />
+              <button key={i} onClick={() => setCurrentSlide(i)} className={`h-1.5 rounded-full transition-all duration-300 ${i === currentSlide ? 'w-8 bg-cyan-400' : 'w-1.5 bg-white/40'}`} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* 2. Overlapping Branch Info Blocks Matrix Container */}
-      <section className="max-w-6xl mx-auto px-4 -mt-20 relative z-30 mb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-3 rounded-xl shadow-2xl overflow-hidden border border-slate-200/10 text-white">
-          
-          {/* Kalavai Main Branch */}
-          <div className="bg-cyan-500 p-8 space-y-4 flex flex-col justify-between">
-            <div className="space-y-3">
-              <h3 className="text-xl font-bold tracking-wide flex items-center gap-2"><MapPin size={20} /> Kalavai (Main Branch)</h3>
-              <p className="text-cyan-50 text-xs font-light leading-relaxed">No.10/1 School street, near police station, Kalavai 632506. Configured with instant digital RVG scanning equipment.</p>
-            </div>
-            <div className="pt-3 border-t border-cyan-400/40 text-xs font-medium space-y-1">
-              <p className="flex items-center gap-2"><Clock size={14} /> 09:00 AM — 08:30 PM (Daily)</p>
-              <p className="flex items-center gap-2"><Phone size={14} /> +91 8883261285</p>
-            </div>
+      {/* 2. Overlapping Branch Info Blocks Matrix */}
+      <section className="max-w-6xl mx-auto px-4 -mt-12 md:-mt-20 relative z-30 mb-16 md:mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-3 rounded-xl shadow-2xl overflow-hidden border border-slate-200/10 text-white gap-0">
+          <div className="bg-cyan-500 p-6 md:p-8 space-y-3 text-left">
+            <h3 className="text-lg md:text-xl font-bold tracking-wide flex items-center gap-2"><MapPin size={18} /> Kalavai (Main Branch)</h3>
+            <p className="text-cyan-50 text-xs font-light leading-relaxed">No.10/1 School street, near police station, Kalavai 632506. Configured with instant digital RVG scanning equipment.</p>
           </div>
-
-          {/* Vembakkam Branch */}
-          <div className="bg-teal-500 p-8 space-y-4 flex flex-col justify-between">
-            <div className="space-y-3">
-              <h3 className="text-xl font-bold tracking-wide flex items-center gap-2"><MapPin size={20} /> Vembakkam Branch</h3>
-              <p className="text-teal-50 text-xs font-light leading-relaxed">No.626 Main Road, Next to KVK Thirumba Mahal, Vembakkam 604410, Tiruvannamalai District.</p>
-            </div>
-            <div className="pt-3 border-t border-teal-400/40 text-xs font-medium space-y-1">
-              <p className="flex items-center gap-2"><Clock size={14} /> Priority Treatment / By Appointment Only</p>
-            </div>
+          <div className="bg-teal-500 p-6 md:p-8 space-y-3 text-left">
+            <h3 className="text-lg md:text-xl font-bold tracking-wide flex items-center gap-2"><MapPin size={18} /> Vembakkam Branch</h3>
+            <p className="text-teal-50 text-xs font-light leading-relaxed">No.626 Main Road, Next to KVK Thirumba Mahal, Vembakkam 604410, Tiruvannamalai District.</p>
           </div>
-
-          {/* Booking Utility Access Card */}
-          <div className="bg-blue-500 p-8 space-y-4 flex flex-col justify-between">
-            <div className="space-y-3">
-              <h3 className="text-xl font-bold tracking-wide flex items-center gap-2"><Calendar size={20} /> Scheduling</h3>
-              <p className="text-blue-50 text-xs font-light leading-relaxed">Coordinate your evaluation treatment window with our clinical specialist securely via integrated WhatsApp dispatch.</p>
-            </div>
-            <div className="pt-3">
-              <button onClick={openModal} className="w-full bg-white hover:bg-slate-100 text-blue-600 font-bold py-3 rounded-lg transition text-xs uppercase tracking-wider shadow-md cursor-pointer">
-                Book Appointment Form ➔
-              </button>
-            </div>
+          <div className="bg-blue-500 p-6 md:p-8 space-y-4 flex flex-col justify-between text-left">
+            <h3 className="text-lg md:text-xl font-bold tracking-wide flex items-center gap-2"><Calendar size={18} /> Scheduling</h3>
+            <button onClick={openModal} className="bg-white text-blue-600 font-bold py-2.5 rounded-lg transition text-xs uppercase tracking-wider shadow-md w-full cursor-pointer hover:bg-slate-50">
+              Book Appointment ➔
+            </button>
           </div>
-
         </div>
       </section>
 
-      {/* 3. Split Services Layout Section */}
-      <section className="max-w-7xl mx-auto px-4 py-16 mb-16">
-        
-        {/* Section Headings */}
-        <div className="text-center space-y-3 max-w-2xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-light text-slate-900 tracking-tight">
-            Our Service Keeps <span className="font-bold text-cyan-600">You Smile</span>
-          </h2>
-          <div className="w-16 h-0.5 bg-cyan-500 mx-auto"></div>
-          <p className="text-slate-400 text-sm font-light leading-relaxed">
-            RK Dental Care structures premium treatment options through clinical precision and hospital-grade sterilization parameters.
-          </p>
+      {/* 3. Split Services Section */}
+      <section className="max-w-7xl mx-auto px-4 py-8 md:py-16 mb-12">
+        <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
+          <h2 className="text-2xl md:text-4xl font-light text-slate-900 tracking-tight"> Our Service Keeps <span className="font-bold text-cyan-600">You Smile</span></h2>
+          <div className="w-14 h-0.5 bg-cyan-500 mx-auto"></div>
+          <p className="text-slate-400 text-xs md:text-sm font-light leading-relaxed">RK Dental Care structures premium treatment options through clinical precision and hospital-grade sterilization parameters.</p>
         </div>
 
-        {/* Two-Column Grid Setup: Left side Image, Right side Services */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        {/* Two-Column Grid Setup */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
           
-          {/* Left Column: Your Custom Tooth Water Splash Asset Panel */}
-          <div className="lg:col-span-5 h-[480px] w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-100 relative group bg-slate-50">
-            <img 
-              src={dentalEquipt} 
-              alt="RK Dental Care Splash Graphic Artwork" 
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-102"
-            />
-            {/* Elegant text accent overlay badge */}
+          {/* Left Column: Clinical Equipment splash */}
+          <div className="lg:col-span-5 h-[350px] md:h-[500px] w-full rounded-2xl overflow-hidden shadow-xl border border-slate-100 relative group bg-slate-50">
+            <img src={dentalEquipt} alt="RK Dental Care Splash Graphic Artwork" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-102" />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent z-10"></div>
-            <div className="absolute bottom-6 left-6 z-20 text-slate-900 text-left space-y-1 bg-white/80 backdrop-blur-xs p-4 rounded-xl border border-white/40 shadow-sm">
-              <span className="text-[10px] font-bold tracking-widest text-cyan-600 uppercase">Clinical Precision</span>
-              <h4 className="text-base font-bold tracking-wide text-slate-800 mt-0.5">State-of-the-Art Operations</h4>
+            <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 z-20 text-left space-y-1 bg-white/90 backdrop-blur-xs p-3 md:p-4 rounded-xl border border-white/40 shadow-sm">
+              <span className="text-[9px] font-bold tracking-widest text-cyan-600 uppercase">Clinical Precision</span>
+              <h4 className="text-sm md:text-base font-bold tracking-wide text-slate-800 mt-0.5">State-of-the-Art Operations</h4>
             </div>
           </div>
 
-          {/* Right Column: Premium Interactive Services List Block */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {homeFourServices.map((service, i) => {
-              const IconComponent = service.icon;
-              return (
-                <Link 
-                  to={`/treatment/${service.id}`} 
-                  key={i} 
-                  className="flex flex-col text-left p-6 border border-slate-100 rounded-xl hover:shadow-xl hover:border-cyan-500/20 transition group duration-300 bg-white shadow-xs relative"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-cyan-500 group-hover:bg-cyan-500 group-hover:text-white transition duration-300 shadow-xs">
-                    <IconComponent className="w-5 h-5" />
-                  </div>
-                  <h4 className="text-base font-bold text-slate-800 tracking-wide mt-4 group-hover:text-cyan-600 transition flex items-center gap-1">
-                    {service.name}
-                  </h4>
-                  <p className="text-slate-400 text-xs font-light leading-relaxed mt-2">{service.desc}</p>
-                  
-                  <div className="pt-4 flex items-center text-[10px] font-bold text-cyan-500 uppercase tracking-wider opacity-0 group-hover:opacity-100 transition duration-300 mt-auto">
-                    Learn Procedure <ChevronRight size={10} className="mt-px" />
-                  </div>
-                </Link>
-              );
-            })}
+          {/* Right Column: Premium Interactive Photo-Based Service Block */}
+          <div className="lg:col-span-7 rounded-2xl overflow-hidden border border-slate-100/60 shadow-xl relative group min-h-[450px] md:min-h-[500px]">
+            <img src={rkDoctor} alt="Dr. V. Radhakrishnan, RK Dental Care Chief Endodontist" className="w-full h-full object-cover" />
+            
+            {/* Dark vignette overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-black/40 to-black/90 z-10 group-hover:scale-101 transition duration-500" />
+
+            {/* Premium Doctor Metadata Badge */}
+            <div className="absolute top-4 left-4 md:top-6 md:left-6 z-30 space-y-0.5 text-left">
+              <span className="text-[9px] uppercase tracking-widest text-white/70 font-medium">Chief Practitioner</span>
+              <h4 className="text-base md:text-lg font-bold text-white tracking-wide">Dr. V. Radhakrishnan BDS., D.Endo.</h4>
+            </div>
+
+            {/* Interactive Grid of Service Badges with automated hover popups */}
+            <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 z-30 max-w-lg space-y-3 w-[calc(100%-2rem)] md:w-[calc(100%-3rem)]">
+              <div className="relative min-h-[60px] hidden md:block">
+                {homeFourServices.map((service, i) => {
+                  const Icon = service.icon;
+                  return (
+                    <Link 
+                      to={`/treatment/${service.id}`} 
+                      key={i} 
+                      className="absolute bottom-0 left-0 flex items-center gap-3 p-3 rounded-lg border border-cyan-500/30 bg-cyan-950/90 backdrop-blur-sm shadow-xl transition duration-300 w-full text-left"
+                      style={{ 
+                        opacity: hoveredServiceIdx === i ? 1 : 0, 
+                        visibility: hoveredServiceIdx === i ? 'visible' : 'hidden',
+                        transform: hoveredServiceIdx === i ? 'translateY(0)' : 'translateY(10px)',
+                        transition: 'opacity 0.3s, transform 0.3s, visibility 0s 0.3s'
+                      }}
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-cyan-500 flex items-center justify-center text-white shrink-0"><Icon className="w-4 h-4" /></div>
+                      <p className="text-slate-100 text-xs font-light leading-relaxed">{service.desc}</p>
+                      <ChevronRight size={16} className="text-cyan-400 ml-auto shrink-0" />
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {/* Menu links triggers */}
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/20 text-left">
+                {homeFourServices.map((service, i) => (
+                  <Link 
+                    key={i} 
+                    to={`/treatment/${service.id}`} 
+                    className="flex items-center gap-1 md:gap-1.5 text-[11px] md:text-xs text-white hover:text-cyan-400 font-medium tracking-wide transition duration-300 py-1"
+                    onMouseEnter={() => setHoveredServiceIdx(i)}
+                    onMouseLeave={() => setHoveredServiceIdx(null)}
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
+                    <span className="truncate">{service.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
           </div>
 
         </div>
       </section>
-
-      {/* 4. Complete Footer with Dual Address Sub-Sections */}
-      <footer className="bg-slate-950 text-slate-400 pt-16 pb-8 px-4 border-t border-slate-900 mt-auto">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 mb-12">
-          
-          {/* Column 1: Core Branding Context (Width Span 4) */}
-          <div className="md:col-span-4 space-y-4">
-            <h3 className="text-white font-bold text-lg tracking-wider">DentaCare.</h3>
-            <p className="text-xs leading-relaxed font-light text-slate-400">
-              Providing premium, patient-friendly dental services in Kalavai since 2018. Your smile remains our absolute clinical priority.
-            </p>
-            <p className="text-xs text-amber-400 font-medium">Dr. V. Radhakrishnan BDS., D.Endo.</p>
-          </div>
-
-          {/* Column 2: Navigation Utilities Link Hub (Width Span 3) */}
-          <div className="md:col-span-3 space-y-4">
-            <h3 className="text-white font-bold text-sm tracking-wider uppercase">Quick Links</h3>
-            <ul className="space-y-2.5 text-xs font-light">
-              <li><Link to="/" className="hover:text-cyan-400 transition">Home Layout</Link></li>
-              <li><Link to="/about" className="hover:text-cyan-400 transition">About Clinic</Link></li>
-              <li><Link to="/services" className="hover:text-cyan-400 transition">Treatments Offered</Link></li>
-              <li><Link to="/contact" className="hover:text-cyan-400 transition">Contact & Location</Link></li>
-            </ul>
-          </div>
-
-          {/* Column 3: Dual Branch Office Addresses Area (Width Span 5) */}
-          <div className="md:col-span-5 space-y-5">
-            <h3 className="text-white font-bold text-sm tracking-wider uppercase">Our Branch Locations</h3>
-            
-            <div className="grid grid-cols-1 gap-4 text-xs font-light text-slate-400">
-              
-              {/* Branch Address Block 1 */}
-              <div className="space-y-1 bg-slate-900/40 p-3 rounded border border-slate-800/40">
-                <p className="text-cyan-400 font-semibold uppercase text-[10px] tracking-wider">Kalavai Hub (Primary)</p>
-                <p className="flex items-start gap-2.5 mt-1">
-                  <MapPin size={14} className="text-cyan-400 shrink-0 mt-0.5" />
-                  <span>No.10/1 School street, near police station, Kalavai 632506</span>
-                </p>
-              </div>
-
-              {/* Branch Address Block 2 (Newly Added Branch Details) */}
-              <div className="space-y-1 bg-slate-900/40 p-3 rounded border border-slate-800/40">
-                <p className="text-teal-400 font-semibold uppercase text-[10px] tracking-wider">Vembakkam Branch</p>
-                <p className="flex items-start gap-2.5 mt-1">
-                  <MapPin size={14} className="text-teal-400 shrink-0 mt-0.5" />
-                  <span>No.626 Main Road, Next to KVK Thirumba Mahal, Vembakkam 604410, Tiruvannamalai District</span>
-                </p>
-              </div>
-
-              {/* Universal Contact Trace Lines */}
-              <div className="pt-2 flex flex-wrap gap-x-6 gap-y-2 border-t border-slate-900/80 text-[11px]">
-                <span className="flex items-center gap-1.5"><Phone size={12} className="text-cyan-400" /> +91 8883261285</span>
-                <span className="flex items-center gap-1.5"><Mail size={12} className="text-cyan-400" /> drradhakrishnan94@gmail.com</span>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-
-        <div className="max-w-7xl mx-auto border-t border-slate-900 pt-6 text-center text-xs text-slate-600">
-          Copyright &copy; {new Date().getFullYear()} All rights reserved | RK Dental Care template custom built with React.
-        </div>
-      </footer>
 
     </div>
   );
