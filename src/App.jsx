@@ -12,6 +12,7 @@ import TreatmentDetail from './pages/TreatmentDetail';
 
 import clinicLogo from './assets/logo.png';
 
+// Strictly 10 Core Services (Orthodontic Treatment Removed)
 const menuTreatments = [
   { id: "dental-filling", name: "Dental Filling" },
   { id: "endodontic-treatment", name: "Endodontic Treatment" },
@@ -22,14 +23,13 @@ const menuTreatments = [
   { id: "pediatric-dentistry", name: "Pediatric Dentistry" },
   { id: "rvg-digital-x-ray", name: "RVG Digital X-Ray Available" },
   { id: "dental-implants", name: "Dental Implants" },
-  { id: "smile-designing", name: "Smile Designing" },
-  { id: "orthodontic-treatment", name: "Orthodontic Treatment" }
+  { id: "smile-designing", name: "Smile Designing" }
 ];
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // <--- Added tracking for Mobile Open states
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); 
 
   const handleModalSubmit = (e) => {
     e.preventDefault();
@@ -59,7 +59,7 @@ export default function App() {
     <Router>
       <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col">
         
-        {/* Top Header Utility Ribbon (Hidden on small mobile viewports) */}
+        {/* Top Header Utility Ribbon */}
         <div className="bg-slate-900 text-slate-400 text-xs py-2 px-4 hidden md:block border-b border-slate-800">
           <div className="max-w-7xl mx-auto flex justify-between items-center">
             <div className="flex gap-6">
@@ -74,7 +74,7 @@ export default function App() {
         <nav className="bg-slate-950 text-white sticky top-0 z-40 shadow-lg">
           <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center">
             
-            <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2.5 md:git gap-3 group">
+            <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2.5 md:gap-3 group">
               <img
                 src={clinicLogo}
                 alt="RK Dental Care Logo"
@@ -86,7 +86,7 @@ export default function App() {
               </div>
             </Link>
             
-            {/* DESKTOP NAVIGATION HUB (Hidden on Mobile) */}
+            {/* DESKTOP NAVIGATION HUB */}
             <div className="hidden lg:flex items-center gap-8 text-sm font-medium tracking-wide uppercase">
               <Link to="/" className="hover:text-cyan-400 transition">Home</Link>
               <Link to="/about" className="hover:text-cyan-400 transition">About Us</Link>
@@ -131,7 +131,7 @@ export default function App() {
               </button>
             </div>
 
-            {/* INTERACTIVE HAMBURGER TOGGLE TRIGGER (Visible Only on Mobile Screens) */}
+            {/* INTERACTIVE HAMBURGER TOGGLE TRIGGER */}
             <div className="lg:hidden flex items-center">
               <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -143,9 +143,9 @@ export default function App() {
 
           </div>
 
-          {/* NEW DROP-DOWN MENU LAYOUT FOR MOBILE SMARTPHONES */}
+          {/* DROP-DOWN MENU LAYOUT FOR MOBILE */}
           {isMobileMenuOpen && (
-            <div className="lg:hidden bg-slate-900 border-t border-slate-800 text-left px-6 py-5 space-y-4 font-medium tracking-wide uppercase text-xs animate-fadeIn">
+            <div className="lg:hidden bg-slate-900 border-t border-slate-800 text-left px-6 py-5 space-y-4 font-medium tracking-wide uppercase text-xs">
               <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-slate-200 hover:text-cyan-400 border-b border-slate-800/40">Home</Link>
               <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-slate-200 hover:text-cyan-400 border-b border-slate-800/40">About Us</Link>
               <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-slate-200 hover:text-cyan-400 border-b border-slate-800/40">Our Treatments</Link>
@@ -176,7 +176,7 @@ export default function App() {
           </Routes>
         </main>
 
-        {/* Floating WhatsApp Bubble Action Tool */}
+        {/* Floating WhatsApp Bubble */}
         <a
           href="https://api.whatsapp.com/send?phone=918883261285&text=Hi%20Doctor%2C%20I%20want%20to%20book%20a%20dental%20consultation%20with%20RK%20Dental%20Care."
           target="_blank"
@@ -225,7 +225,7 @@ export default function App() {
           </div>
         </footer>
 
-        {/* Booking Overlay Modal form */}
+        {/* Booking Overlay Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-[100]">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden relative">
