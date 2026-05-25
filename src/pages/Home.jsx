@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, ShieldAlert, MapPin, Sparkles, Activity, Layers, Calendar, Phone, Syringe, ChevronRight } from 'lucide-react';
+import { Clock, ShieldAlert, MapPin, Sparkles, Activity, Layers, Calendar, Phone, Syringe } from 'lucide-react';
 
 // Secure local imports for your background slider assets
 import bgSlide1 from '../assets/Royalty.webp';
@@ -9,20 +9,11 @@ import bgSlide5 from '../assets/bg-5.webp';
 import bgSlide6 from '../assets/bg-6.jpg';
 import bgSlide7 from '../assets/bg-7.avif';
 
-// Secure local import for your main branding/overview images
-import rkDoctor from '../assets/rk.jpeg'; 
+// Secure local import for your clinical showcase asset
 import dentalEquipt from '../assets/dental-equipt.jpg';
-
-const homeFourServices = [
-  { id: "root-canal-treatment", name: "Root Canal Treatment", icon: Activity, desc: "Painless microscopic root salvages to clear deep interior root complexes." },
-  { id: "dental-filling", name: "Dental Filling", icon: Sparkles, desc: "Restores tooth structure cleanly by safely removing minor dental decay channels." },
-  { id: "scaling-and-root-planing", name: "Scaling & Root Planing", icon: Syringe, desc: "Deep ultrasonic plaque removals targeting sub-gingival calculus safely." },
-  { id: "orthodontic-treatment", name: "Orthodontic Treatment", icon: Layers, desc: "Premium alignment systems and clear aligners to guide crooked teeth." }
-];
 
 export default function Home({ openModal }) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [hoveredServiceIdx, setHoveredServiceIdx] = useState(null);
   
   const localSlides = [
     bgSlide1, 
@@ -43,7 +34,7 @@ export default function Home({ openModal }) {
   return (
     <div className="bg-white min-h-screen font-sans antialiased w-full overflow-x-hidden">
       
-      {/* 1. Dynamic Hero Slideshow Area — Fixed top-padding metrics for mobile viewports */}
+      {/* 1. Dynamic Hero Slideshow Area */}
       <section className="relative min-h-[500px] sm:min-h-[580px] md:min-h-[660px] bg-slate-950 flex items-center justify-center px-4 overflow-hidden">
         {localSlides.map((slideAsset, index) => (
           <div
@@ -56,7 +47,6 @@ export default function Home({ openModal }) {
         ))}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/90 to-transparent z-10"></div>
         
-        {/* Added responsive pt-24 padding to push content down on mobile views */}
         <div className="max-w-4xl mx-auto w-full relative z-20 text-center space-y-6 pt-24 pb-24 md:pt-16 md:pb-20 px-2">
           <span className="bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-3 py-1 md:px-4 md:py-1.5 rounded-full text-[10px] md:text-xs font-semibold uppercase tracking-widest inline-block">
             Estd. 2018 | 7 Years of Dental Excellence
@@ -98,7 +88,7 @@ export default function Home({ openModal }) {
         </div>
       </section>
 
-      {/* 3. Split Services Section */}
+      {/* 3. Classic Simple 4-Grid Services Segment */}
       <section className="max-w-7xl mx-auto px-4 py-8 md:py-16 mb-12">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
           <h2 className="text-2xl md:text-4xl font-light text-slate-900 tracking-tight"> Our Service Keeps <span className="font-bold text-cyan-600">You Smile</span></h2>
@@ -106,79 +96,55 @@ export default function Home({ openModal }) {
           <p className="text-slate-400 text-xs md:text-sm font-light leading-relaxed">RK Dental Care structures premium treatment options through clinical precision and hospital-grade sterilization parameters.</p>
         </div>
 
-        {/* Two-Column Grid Setup */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
           
-          {/* Left Column: Clinical Equipment splash */}
-          <div className="lg:col-span-5 h-[350px] md:h-[500px] w-full rounded-2xl overflow-hidden shadow-xl border border-slate-100 relative group bg-slate-50">
-            <img src={dentalEquipt} alt="RK Dental Care Splash Graphic Artwork" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-102" />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent z-10"></div>
-            <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 z-20 text-left space-y-1 bg-white/90 backdrop-blur-xs p-3 md:p-4 rounded-xl border border-white/40 shadow-sm">
-              <span className="text-[9px] font-bold tracking-widest text-cyan-600 uppercase">Clinical Precision</span>
-              <h4 className="text-sm md:text-base font-bold tracking-wide text-slate-800 mt-0.5">State-of-the-Art Operations</h4>
+          {/* Service Block 1 */}
+          <Link to="/treatment/root-canal-treatment" className="bg-white p-8 rounded-2xl border border-slate-100 shadow-xs hover:border-cyan-500/30 hover:shadow-md transition duration-300 space-y-4 group">
+            <div className="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition">
+              <Activity size={22} />
             </div>
-          </div>
-
-          {/* Right Column: Premium Interactive Photo-Based Service Block */}
-          <div className="lg:col-span-7 rounded-2xl overflow-hidden border border-slate-100/60 shadow-xl relative group min-h-[450px] md:min-h-[500px]">
-            <img src={rkDoctor} alt="Dr. V. Radhakrishnan, RK Dental Care Chief Endodontist" className="w-full h-full object-cover" />
-            
-            {/* Dark vignette overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-black/40 to-black/90 z-10 group-hover:scale-101 transition duration-500" />
-
-            {/* Premium Doctor Metadata Badge */}
-            <div className="absolute top-4 left-4 md:top-6 md:left-6 z-30 space-y-0.5 text-left">
-              <span className="text-[9px] uppercase tracking-widest text-white/70 font-medium">Chief Practitioner</span>
-              <h4 className="text-base md:text-lg font-bold text-white tracking-wide">Dr. V. Radhakrishnan BDS., D.Endo.</h4>
+            <div className="space-y-1">
+              <h4 className="font-bold text-slate-800 text-base">Root Canal Treatment</h4>
+              <p className="text-slate-400 text-xs font-light leading-relaxed">Painless microscopic root salvages to clear deep interior root complexes.</p>
             </div>
+          </Link>
 
-            {/* Interactive Grid of Service Badges with automated hover popups */}
-            <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 z-30 max-w-lg space-y-3 w-[calc(100%-2rem)] md:w-[calc(100%-3rem)]">
-              <div className="relative min-h-[60px] hidden md:block">
-                {homeFourServices.map((service, i) => {
-                  const Icon = service.icon;
-                  return (
-                    <Link 
-                      to={`/treatment/${service.id}`} 
-                      key={i} 
-                      className="absolute bottom-0 left-0 flex items-center gap-3 p-3 rounded-lg border border-cyan-500/30 bg-cyan-950/90 backdrop-blur-sm shadow-xl transition duration-300 w-full text-left"
-                      style={{ 
-                        opacity: hoveredServiceIdx === i ? 1 : 0, 
-                        visibility: hoveredServiceIdx === i ? 'visible' : 'hidden',
-                        transform: hoveredServiceIdx === i ? 'translateY(0)' : 'translateY(10px)',
-                        transition: 'opacity 0.3s, transform 0.3s, visibility 0s 0.3s'
-                      }}
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-cyan-500 flex items-center justify-center text-white shrink-0"><Icon className="w-4 h-4" /></div>
-                      <p className="text-slate-100 text-xs font-light leading-relaxed">{service.desc}</p>
-                      <ChevronRight size={16} className="text-cyan-400 ml-auto shrink-0" />
-                    </Link>
-                  );
-                })}
-              </div>
-
-              {/* Menu links triggers */}
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/20 text-left">
-                {homeFourServices.map((service, i) => (
-                  <Link 
-                    key={i} 
-                    to={`/treatment/${service.id}`} 
-                    className="flex items-center gap-1 md:gap-1.5 text-[11px] md:text-xs text-white hover:text-cyan-400 font-medium tracking-wide transition duration-300 py-1"
-                    onMouseEnter={() => setHoveredServiceIdx(i)}
-                    onMouseLeave={() => setHoveredServiceIdx(null)}
-                  >
-                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
-                    <span className="truncate">{service.name}</span>
-                  </Link>
-                ))}
-              </div>
+          {/* Service Block 2 */}
+          <Link to="/treatment/dental-filling" className="bg-white p-8 rounded-2xl border border-slate-100 shadow-xs hover:border-cyan-500/30 hover:shadow-md transition duration-300 space-y-4 group">
+            <div className="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition">
+              <Sparkles size={22} />
             </div>
+            <div className="space-y-1">
+              <h4 className="font-bold text-slate-800 text-base">Dental Filling</h4>
+              <p className="text-slate-400 text-xs font-light leading-relaxed">Restores tooth structure cleanly by safely removing minor dental decay channels.</p>
+            </div>
+          </Link>
 
-          </div>
+          {/* Service Block 3 */}
+          <Link to="/treatment/scaling-and-root-planing" className="bg-white p-8 rounded-2xl border border-slate-100 shadow-xs hover:border-cyan-500/30 hover:shadow-md transition duration-300 space-y-4 group">
+            <div className="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition">
+              <Syringe size={22} />
+            </div>
+            <div className="space-y-1">
+              <h4 className="font-bold text-slate-800 text-base">Scaling & Root Planing</h4>
+              <p className="text-slate-400 text-xs font-light leading-relaxed">Deep ultrasonic plaque removals targeting sub-gingival calculus safely.</p>
+            </div>
+          </Link>
+
+          {/* Service Block 4 */}
+          <Link to="/treatment/orthodontic-treatment" className="bg-white p-8 rounded-2xl border border-slate-100 shadow-xs hover:border-cyan-500/30 hover:shadow-md transition duration-300 space-y-4 group">
+            <div className="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition">
+              <Layers size={22} />
+            </div>
+            <div className="space-y-1">
+              <h4 className="font-bold text-slate-800 text-base">Orthodontic Treatment</h4>
+              <p className="text-slate-400 text-xs font-light leading-relaxed">Premium alignment systems and clear aligners to guide crooked teeth.</p>
+            </div>
+          </Link>
 
         </div>
       </section>
 
     </div>
   );
-}
+} 
