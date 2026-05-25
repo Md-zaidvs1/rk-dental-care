@@ -1,157 +1,273 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, CheckCircle2, ShieldCheck, Stethoscope, HelpCircle } from 'lucide-react';
+import { HeartPulse, Star, HelpCircle, ArrowLeft, Phone, Sparkles } from 'lucide-react';
 
-const treatmentDatabase = {
+// Secure local asset imports
+import imgFilling from '../assets/bg-11.jpg';
+import imgEndo from '../assets/bg-8.jpg';
+import imgRootCanal from '../assets/bg-10.jpg';
+import imgScaling from '../assets/dental-equipt.jpg';
+import imgExtraction from '../assets/bg-7.avif';
+import imgMissingTeeth from '../assets/Royalty.webp';
+import imgPediatric from '../assets/bg-12.jpeg';
+import imgXray from '../assets/bg-4.avif';
+import imgImplants from '../assets/bg-9.webp';
+import imgSmileDesign from '../assets/bg-5.webp';
+
+const treatmentsData = {
   "dental-filling": {
     name: "Dental Filling",
-    tagline: "Restoring structural integrity and reversing early tooth decay.",
-    definition: "A dental filling is a core restorative procedure where decay-causing bacteria and damaged structures are cleared out, and the resulting cavity is filled with highly durable biocompatible resins. This helps stabilize biting forces across your dental arch safely.",
-    steps: ["Application of localized gel or anesthetic to ensure a completely painless experience.", "Meticulous extraction of decayed enamel and infected layers using advanced hand instruments or drills.", "Conditioning the clean workspace matrix with premium direct composite material shades.", "Curing the filling instantly with a specialized wave curing light to guarantee lasting hardness.", "Polishing edges cleanly to align perfectly with your natural bite occlusion patterns."]
+    image: imgFilling,
+    overview: "Dental filling procedures eliminate decay channels to structural walls cleanly, replacing missing spaces with tooth-colored biocompatible composite resins.",
+    phases: [
+      "Removing minor structural decay elements cleanly.",
+      "Disinfecting the open tooth cavity matrix surface.",
+      "Layering custom-tinted composite bonding resins.",
+      "Using specialized UV light curing tools to set instantly.",
+      "Polishing structural boundaries to match biting occlusion alignment."
+    ]
   },
   "endodontic-treatment": {
     name: "Endodontic Treatment",
-    tagline: "Advanced inner pulp diagnostics and root micro-therapy.",
-    definition: "Endodontics focuses heavily on specialized diagnoses concerning internal tooth pulp tissues containing primary nerves and blood supplies. Early endodontic detection prevents tooth structure failure, containing localized micro-decay before abscess patterns manifest.",
-    steps: ["High-magnification evaluation of root canal paths using modern imaging.", "Isolating the tooth with clinical barriers to exclude salivary bacteria mixtures.", "Accessing inner spaces safely to verify pulp structural configurations.", "Targeting tracking lines via microscopic diagnostic files.", "Eradicating deep necrotic tissue layers gracefully to safeguard root viability."]
+    image: imgEndo,
+    overview: "Endodontic disciplines manage pathology paths localized inside root canals. Early diagnostics prevent secondary tracking lines from manifesting into structural abscess complexes.",
+    phases: [
+      "High-magnification mapping of inner canal metrics via digital imaging fields.",
+      "Isolating the tooth structure cleanly with physical clinical moisture barriers.",
+      "Accessing inner root pathways to locate microscopic decay branches.",
+      "Clearing bacterial tissue elements safely using micro-endodontic file cycles.",
+      "Applying medicinal packing layers to stabilize structural walls gracefully."
+    ]
   },
   "root-canal-treatment": {
     name: "Root Canal Treatment",
-    tagline: "Painless root salvation therapies to protect natural teeth.",
-    definition: "Root canal therapy resolves severe deep infections inside your tooth pulp without requiring standard tooth extractions. By clearing root pathways entirely and sealing them with biocompatible fillings, it eliminates toothache irritation permanently.",
-    steps: ["Administering numbing anesthetic sets near the tooth area for total comfort.", "Drilling a safe, clean opening down through the upper crown shell framework.", "Removing all infected or necrotic pulp layers down to the root tips.", "Disinfecting and reshaping root walls using endodontic files.", "Sealing the empty canals with gutta-percha and placing a crown for permanent protection."]
+    image: imgRootCanal,
+    overview: "Specialized deep pulp nerve clearing built to completely salvage severely infected or compromised teeth, bypassing extraction routes entirely.",
+    phases: [
+      "Administering highly localized, completely painless anesthesia layers.",
+      "Gaining interior pulp access to expose hidden infected nerve networks.",
+      "Extracting necrotic tissues using digital electronic apex locator tracking.",
+      "Sealing canal paths permanently with dense biocompatible gutta-percha structures.",
+      "Preparing the upper tooth foundation to safely host a permanent structural crown."
+    ]
   },
   "scaling-and-root-planing": {
     name: "Scaling & Root Planing",
-    tagline: "Deep pocket dental cleanings to reverse gum disease advancement.",
-    definition: "Scaling and root planing is a non-surgical deep cleaning protocol designed for advanced chronic gum disease. It eliminates deep calculus and bacterial film build-up trapped inside deep gum pockets.",
-    steps: ["Numbing tender gum margins slightly using a local numbing agent.", "Scaling hard plaque and yellow calculus deposits above and below the gumline.", "Planing and smoothing root configurations to clear away microscopic rough spots.", "Flushing the pocket metrics with antibacterial solutions to control harmful bacteria.", "Allowing gum fibers to safely reattach tightly back against your smooth teeth walls."]
+    image: imgScaling,
+    overview: "Advanced ultrasonic deep cleaning that targeting plaque sub-gingivally beneath delicate gumlines, reversing chronic periodontal diseases safely.",
+    phases: [
+      "Vibrating calcified plaque away using micro-ultrasonic scaling tools.",
+      "Decontaminating deep bacterial pockets beneath the soft tissue line.",
+      "Smoothing of delicate root surfaces to promote healthy gum re-attachment.",
+      "Flushing deep pockets with anti-microbial cooling fluid loops.",
+      "Aiding tissues to re-attach securely to pristine root surfaces."
+    ]
   },
   "extraction": {
-    name: "Tooth Extraction",
-    tagline: "Safe, comfortable extraction of non-restorably damaged teeth.",
-    definition: "When severe decay or multi-layer cracks render a tooth non-salvageable, a controlled clinical extraction preserves overall oral health. This standard out-patient procedure prevents serious systemic infections from traveling into neighboring facial structures.",
-    steps: ["Comprehensive x-ray review to verify underlying bone morphology lines.", "Applying profound local anesthesia to block neural path responses entirely.", "Gently widening the alveolar pocket using modern specialized elevators.", "Extracting the target tooth safely without straining adjoining tissues.", "Placing sterilizing gauze pads to initiate rapid, healthy blood clotting blocks."]
+    name: "Surgical Extraction",
+    image: imgExtraction,
+    overview: "Atraumatic extraction handling designed to remove non-restorable tooth segments or impacted wisdom configurations with absolute surgical precision.",
+    phases: [
+      "Comprehensive digital X-ray evaluation of the target root structure alignment.",
+      "Numbing surrounding periodontal tissues completely for stress-free extraction.",
+      "Gently luxating the target tooth root structure to protect bone boundaries.",
+      "Clearing the biological socket cleanly and placing stabilizing gauze packs.",
+      "Providing clear, structured post-operative recovery guidance profiles."
+    ]
   },
   "replacement-of-missing-teeth": {
     name: "Replacement of Missing Teeth",
-    tagline: "Re-establishing natural bite parameters and structural support profiles.",
-    definition: "Leaving extraction gaps untreated causes adjacent teeth to shift, which can lead to jaw joint strain and chewing difficulties. Replacing missing options restores balanced forces and maintains proper facial vertical heights.",
-    steps: ["Taking highly precise mouth arch imprints and alignment metrics.", "Discussing dental bridge configurations or removable partial designs based on your case.", "Preparing adjoining healthy teeth if anchoring fixed structural crowns is preferred.", "Fabricating custom prosthetic shapes inside specialized dental laboratories.", "Cementing your permanent teeth replacements securely to re-establish your complete bite grid."]
+    image: imgMissingTeeth,
+    overview: "Advanced prosthetic tooth replacements using permanent custom bridges or durable dentures to restore original chewing forces cleanly.",
+    phases: [
+      "Taking highly precise digital or physical crown path impressions.",
+      "Preparing neighboring target pillars to support customized fixed bridges.",
+      "Fabricating perfect shade-matched ceramic crown matrices in the lab.",
+      "Affixing temporary shielding layers to guard vulnerable structures.",
+      "Permanently bonding the premium porcelain prosthetic unit into place securely."
+    ]
   },
   "pediatric-dentistry": {
     name: "Pediatric Dentistry",
-    tagline: "Gentle primary care designed exclusively for growing child smiles.",
-    definition: "Pediatric care focuses entirely on the unique oral health timelines of toddlers and adolescents. Creating positive early experiences avoids dental anxiety protocols, ensuring primary milk teeth remain healthy until permanent sets emerge naturally.",
-    steps: ["Friendly, patient-centric introductions to lower environmental stress loops.", "Meticulous scanning for early developmental childhood cavities and bite anomalies.", "Applying smooth fluoride sealants to protect grooves on young molars.", "Providing helpful brush guidance using easy-to-understand dental illustrations.", "Tracking jaw structure development to guide healthy alignment over time."]
+    image: imgPediatric,
+    overview: "Compassionate, gentle dental care structured specifically around matching children's mental comfort levels while safeguarding primary teeth layout structures.",
+    phases: [
+      "Welcoming children into a warm, positive, non-threatening clinical space.",
+      "Evaluating initial primary enamel paths with gentle mirror tracking tools.",
+      "Applying advanced preventive fluoride coatings or dental sealants.",
+      "Treating childhood cavities smoothly using fast restorative bonding layers.",
+      "Teaching clear, fun, and easy home-care brushing habits to kids."
+    ]
   },
   "rvg-digital-x-ray": {
-    name: "RVG Digital X-Ray",
-    tagline: "Instant, low-radiation imaging for highly precise treatment maps.",
-    definition: "Radio-Visionography (RVG) updates standard manual film x-rays into crisp digital imaging layouts instantly. This allows the doctor to analyze interior bone lines and root pathologies with over 80% lower radiation exposure levels.",
-    steps: ["Placing a comfortable, rounded digital sensor smoothly near the target tooth row.", "Emitting a precise, low-dose electronic diagnostic beam instantly.", "Displaying high-resolution tooth interior structural grids on our monitor right away.", "Magnifying intricate root paths to locate hidden root decay lines perfectly.", "Storing charts securely to cross-check clinical progression accurately."]
+    name: "RVG Digital X-Ray Available",
+    image: imgXray,
+    overview: "Real-time, instantaneous digital radiography that prints internal bone and roots data to high-resolution screens while cutting traditional radiation levels by over 80%.",
+    phases: [
+      "Positioning a comfortable, ultra-thin electronic sensor element inside the mouth.",
+      "Targeting the localized area precisely with low-exposure diagnostic beams.",
+      "Processing crisp dental x-ray imagery instantly on the main laptop interface.",
+      "Zooming in microscopically to spot early inter-proximal decay paths.",
+      "Storing dental diagnostic images safely inside the digital patient file layout."
+    ]
   },
   "dental-implants": {
     name: "Dental Implants",
-    tagline: "The golden standard solution for permanent root replacement setups.",
-    definition: "Dental implants are titanium replacement posts surgically placed directly into your jawbone. Over a few months, the post fuses with the bone, serving as a permanent root anchor for a custom porcelain crown.",
-    steps: ["Using high-precision digital X-rays to map available jawbone width matrices.", "Surgically anchoring the sterile titanium script post into the target empty bone slot.", "Allowing a healing timeline for the post to naturally bond into place.", "Attaching a custom prosthetic connector element onto the sturdy root post.", "Placing a beautifully shaded ceramic crown that looks and feels like a real tooth."]
+    image: imgImplants,
+    overview: "The absolute premium standard in tooth replacement: biocompatible titanium roots anchored directly to the bone to provide permanent stability.",
+    phases: [
+      "Mapping bone density metrics precisely via digital radiographic tracking.",
+      "Placing a sterile titanium implant fixture root into the jawbone matrix.",
+      "Allowing secure biological osseointegration over a few healing weeks.",
+      "Securing a customized structural prosthetic connector abutment piece.",
+      "Torquing a beautiful, hand-finished aesthetic porcelain crown into place."
+    ]
   },
   "smile-designing": {
     name: "Smile Designing",
-    tagline: "Custom cosmetic corrections built to balance facial harmony lines.",
-    definition: "Smile designing combines multiple aesthetic procedures—such as whitening, veneers, or crowns—to create a balanced, natural-looking smile that complements your unique facial features.",
-    steps: ["Capturing high-resolution diagnostic portrait photos and modeling measurements.", "Analyzing vertical proportions based on lip lines and eye symmetry axes.", "Using digital tools to map your ideal tooth size, length, and shade parameters.", "Performing minimal structural preparation steps to ensure natural final results.", "Placing custom custom-shaded composite modifications or veneers to complete your smile transformation."]
-  },
-  "orthodontic-treatment": {
-    name: "Orthodontic Treatment",
-    tagline: "Aligning crowded configurations safely for long-lasting health.",
-    definition: "Orthodontics uses specialized bracket arrays or clear aligners to gently guide crowded, rotated, or gapped teeth into healthy alignments over time. This enhances bite function and makes daily teeth cleaning much easier.",
-    steps: ["Taking diagnostic tracking models and root bone overview radiographs.", "Bonding premium dental bracket frames onto the teeth surfaces with precision.", "Threading lightweight archwires across the slots to create gentle, guided movement.", "Performing smooth adjustments every few weeks to advance tracking patterns.", "Placing comfortable custom retainers at the finish line to protect your new alignment permanently."]
+    image: imgSmileDesign,
+    overview: "A comprehensive cosmetic face makeup that updates tracking metrics across shade, length, alignment, and veneer layouts to craft your ideal perfect smile.",
+    phases: [
+      "Analyzing facial proportions and color tones under clinical studio lighting.",
+      "Performing minor contouring shifts to smooth jagged enamel edges.",
+      "Taking micro-layer impressions for custom cosmetic porcelain veneers.",
+      "Applying medical-grade bleaching configurations to balance color shades.",
+      "Bonding glass-ceramic restorations to achieve flawless visual harmony."
+    ]
   }
 };
 
 export default function TreatmentDetail() {
   const { id } = useParams();
-  const treatment = treatmentDatabase[id];
+  const treatment = treatmentsData[id];
 
-  // Fallback view state handler if URL parameters break
   if (!treatment) {
     return (
-      <div className="max-w-xl mx-auto py-24 text-center space-y-4">
-        <h2 className="text-2xl font-bold text-slate-800">Treatment File Not Found</h2>
-        <Link to="/services" className="text-cyan-500 hover:underline inline-flex items-center gap-1">➔ Return to Services Hub</Link>
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-slate-50">
+        <h3 className="text-xl font-bold text-slate-700">Treatment Profile Not Found</h3>
+        <Link to="/" className="mt-4 text-cyan-600 flex items-center gap-2 text-sm">
+          <ArrowLeft size={16} /> Return to Home Platform
+        </Link>
       </div>
     );
   }
 
+  const whatsappConsultUrl = `https://api.whatsapp.com/send?phone=918883261285&text=${encodeURIComponent(
+    `Hello RK Dental Care! I was reading about your *${treatment.name}* service and have some clinical questions. I would like to book a consultation window.`
+  )}`;
+
   return (
-    <div className="bg-slate-50 min-h-screen pb-20">
+    <div className="bg-slate-50 min-h-screen font-sans antialiased text-slate-600 flex flex-col">
       
-      {/* Top Banner Header Area Layout */}
-      <section className="bg-slate-950 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto space-y-3">
-          <Link to="/services" className="text-cyan-400 hover:text-cyan-300 text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 mb-2">
-            <ChevronLeft size={14} /> Back To All Services
+      {/* Hero Banner Header */}
+      <section className="relative bg-slate-950 text-white py-20 px-6 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-20 scale-105 blur-xs"
+          style={{ backgroundImage: `url(${treatment.image})` }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent z-10"></div>
+        
+        <div className="max-w-7xl mx-auto w-full relative z-20 text-left space-y-4 md:px-10">
+          <Link to="/" className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-3 py-1.5 rounded-full border border-cyan-500/20 hover:bg-cyan-500 hover:text-white transition duration-300">
+            <ArrowLeft size={12} /> Back to Home
           </Link>
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white">{treatment.name}</h1>
-          <p className="text-slate-400 text-sm font-light max-w-xl">{treatment.tagline}</p>
+          <div className="space-y-1 pt-2">
+            <span className="text-xs font-bold text-amber-400 tracking-widest uppercase flex items-center gap-1">
+              <Sparkles size={12} /> Speciality Procedure Guide
+            </span>
+            <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+              {treatment.name} <span className="font-light text-slate-400">Services</span>
+            </h1>
+          </div>
         </div>
       </section>
 
-      {/* Main Split Layout Data Info View Block */}
-      <div className="max-w-4xl mx-auto px-4 mt-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      {/* Main Content Layout */}
+      <section className="max-w-7xl mx-auto w-full px-4 md:px-14 py-16 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start flex-grow">
         
-        {/* Left Area Content Details text boxes */}
-        <div className="md:col-span-8 bg-white border border-slate-200/60 p-6 md:p-8 rounded-xl shadow-xs space-y-8">
+        {/* Left Module Panel */}
+        <div className="lg:col-span-8 bg-white border border-slate-200/60 rounded-2xl p-6 md:p-10 shadow-sm space-y-10 text-left">
           
-          <div className="space-y-3">
-            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2 border-b pb-2 border-slate-100">
-              <Stethoscope size={18} className="text-cyan-500" /> Clinical Definition
+          {/* Overview Statement */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-slate-900 tracking-wide flex items-center gap-2 border-b border-slate-100 pb-3">
+              <HeartPulse className="text-cyan-500" size={20} /> Clinical Overview
             </h3>
-            <p className="text-slate-600 text-sm font-light leading-relaxed">
-              {treatment.definition}
+            <p className="text-slate-500 text-sm md:text-base font-light leading-relaxed">
+              {treatment.overview}
             </p>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2 border-b pb-2 border-slate-100">
-              <ShieldCheck size={18} className="text-cyan-500" /> Procedural Steps Involved
+          {/* Phase Grid Framework */}
+          <div className="space-y-5">
+            <h3 className="text-xl font-bold text-slate-900 tracking-wide flex items-center gap-2 border-b border-slate-100 pb-3">
+              <Star className="text-cyan-500 shrink-0" size={18} /> Procedural Framework Phases
             </h3>
-            <ol className="space-y-3.5">
-              {treatment.steps.map((step, index) => (
-                <li key={index} className="flex gap-3 text-sm text-slate-600 font-light items-start">
-                  <div className="w-5 h-5 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-100 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                    {index + 1}
+
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pt-2 items-stretch">
+              
+              {/* Left Side: Step Items */}
+              <div className="md:col-span-7 space-y-3.5">
+                {treatment.phases.map((phase, idx) => (
+                  <div key={idx} className="flex items-start gap-3 bg-slate-50/50 p-3.5 rounded-xl border border-slate-100 transition hover:border-cyan-500/20">
+                    <div className="w-6 h-6 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-100 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                      {idx + 1}
+                    </div>
+                    <p className="text-slate-600 text-xs md:text-sm font-light leading-relaxed pt-0.5">
+                      {phase}
+                    </p>
                   </div>
-                  <span className="leading-relaxed">{step}</span>
-                </li>
-              ))}
-            </ol>
+                ))}
+              </div>
+
+              {/* FIXED IMAGE CONTAINER: Smart auto-fit for all photo dimensions */}
+              <div className="md:col-span-5 w-full rounded-xl border border-slate-200/60 bg-slate-950 overflow-hidden shadow-md flex items-center justify-center relative p-2 min-h-[320px]">
+                <img 
+                  src={treatment.image} 
+                  alt={`${treatment.name} Clinical Guide Panel`} 
+                  className="max-w-full max-h-[380px] object-contain rounded-lg transition-transform duration-300 hover:scale-101"
+                />
+              </div>
+
+            </div>
           </div>
 
         </div>
 
-        {/* Right Info Context Alert Container Sidebar */}
-        <div className="md:col-span-4 bg-gradient-to-br from-slate-900 to-slate-950 text-white p-6 rounded-xl shadow-md space-y-4 border border-slate-800">
-          <HelpCircle className="w-8 h-8 text-cyan-400" />
-          <h4 className="font-bold text-base tracking-wide">Have Questions?</h4>
-          <p className="text-xs font-light text-slate-300 leading-relaxed">
-            Every patient's case profile presents structural variances. Schedule a consultation visit to obtain a personalized diagnostic breakdown under Dr. Radhakrishnan.
+        {/* Right Sticky Sidebar */}
+        <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-6">
+          <div className="bg-slate-900 text-white rounded-2xl shadow-xl p-8 space-y-6 border border-slate-800 text-left relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-cyan-500/10 blur-2xl pointer-events-none"></div>
+            
+            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+              <HelpCircle size={22} />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-xl font-bold tracking-tight text-white">Have Clinical Questions?</h3>
+              <p className="text-slate-400 text-xs font-light leading-relaxed">
+                Every patient's dental profile shows structural variations. Arrange an evaluation check directly with Dr. Radhakrishnan to map out your targeted diagnostic timeline.
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <a 
+                href={whatsappConsultUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3.5 rounded-xl transition text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+              >
+                Consult On Whatsapp ➔
+              </a>
+            </div>
+          </div>
+
+          <p className="text-[11px] text-slate-400 text-center font-light">
+            Need primary routing layout assistance? Reach us at <span className="font-medium text-slate-500">+91 8883261285</span>
           </p>
-          <div className="pt-2">
-            <a 
-              href={`https://wa.me/918883261285?text=Hi%20Doctor%2C%20I%20have%20a%20question%20regarding%20${encodeURIComponent(treatment.name)}.`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-center bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-bold uppercase tracking-wider py-2.5 rounded transition shadow-md"
-            >
-              Consult On WhatsApp ➔
-            </a>
-          </div>
         </div>
 
-      </div>
+      </section>
 
     </div>
   );
