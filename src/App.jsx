@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, Clock, Calendar, MessageSquare, X, ChevronDown } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Calendar, MessageSquare, X, ChevronDown, Menu } from 'lucide-react';
 
 // Core page layouts
 import Home from './pages/Home';
@@ -29,16 +29,14 @@ const menuTreatments = [
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // <--- Added tracking for Mobile Open states
 
-  // Smart Universal WhatsApp Dispatcher with Desktop Fallback Protection
   const handleModalSubmit = (e) => {
     e.preventDefault();
-    
     const name = e.target.patientName.value.trim();
     const phone = e.target.patientPhone.value.trim();
     const treatment = e.target.treatment.value;
 
-    // Beautifully formatted text message layout
     const baseMessage = 
       `Hello RK Dental Care! I would like to request a dental appointment.\n\n` +
       `*Patient Name:* ${name}\n` +
@@ -47,21 +45,12 @@ export default function App() {
 
     const encodedMessage = encodeURIComponent(baseMessage);
     const targetNumber = "918883261285";
-
-    // Detect if the user is browsing on a desktop machine or mobile phone
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
-    let finalWhatsappUrl = "";
+    let finalWhatsappUrl = isMobile 
+      ? `https://wa.me/${targetNumber}?text=${encodedMessage}`
+      : `https://api.whatsapp.com/send?phone=${targetNumber}&text=${encodedMessage}`;
 
-    if (isMobile) {
-      // Mobile devices work flawlessly with the crisp wa.me deep-link protocol
-      finalWhatsappUrl = `https://wa.me/${targetNumber}?text=${encodedMessage}`;
-    } else {
-      // Desktops are routed directly to the official web client API to prevent the gray screen lock
-      finalWhatsappUrl = `https://web.whatsapp.com/send?phone=${targetNumber}&text=${encodedMessage}`;
-    }
-
-    // Securely launch the chat path window channel
     window.open(finalWhatsappUrl, '_blank', 'noopener,noreferrer');
     setIsModalOpen(false);
   };
@@ -70,7 +59,7 @@ export default function App() {
     <Router>
       <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col">
         
-        {/* Top Header Ribbon */}
+        {/* Top Header Utility Ribbon (Hidden on small mobile viewports) */}
         <div className="bg-slate-900 text-slate-400 text-xs py-2 px-4 hidden md:block border-b border-slate-800">
           <div className="max-w-7xl mx-auto flex justify-between items-center">
             <div className="flex gap-6">
@@ -83,25 +72,26 @@ export default function App() {
 
         {/* Global Navigation Bar */}
         <nav className="bg-slate-950 text-white sticky top-0 z-40 shadow-lg">
-          <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center">
             
-            <Link to="/" className="flex items-center gap-3 group">
+            <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2.5 md:git gap-3 group">
               <img
                 src={clinicLogo}
                 alt="RK Dental Care Logo"
-                className="h-16 w-auto rounded-md shadow-md border border-amber-500/20"
+                className="h-12 w-auto md:h-16 rounded-md shadow-md border border-amber-500/20"
               />
               <div className="text-left">
-                <span className="font-bold text-xl block tracking-wider text-white">RK DENTAL CARE</span>
-                <span className="text-[10px] text-amber-400 block -mt-1 font-semibold tracking-widest uppercase">General & Cosmetic Dentistry</span>
+                <span className="font-bold text-base md:text-xl block tracking-wider text-white">RK DENTAL CARE</span>
+                <span className="text-[9px] md:text-[10px] text-amber-400 block font-semibold tracking-widest uppercase">General & Cosmetic Dentistry</span>
               </div>
             </Link>
             
-            <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide uppercase">
+            {/* DESKTOP NAVIGATION HUB (Hidden on Mobile) */}
+            <div className="hidden lg:flex items-center gap-8 text-sm font-medium tracking-wide uppercase">
               <Link to="/" className="hover:text-cyan-400 transition">Home</Link>
               <Link to="/about" className="hover:text-cyan-400 transition">About Us</Link>
               
-              {/* Treatments Offered Dropdown Menu */}
+              {/* Treatments Dropdown Trigger */}
               <div 
                 className="relative py-2"
                 onMouseEnter={() => setIsDropdownOpen(true)}
@@ -140,10 +130,41 @@ export default function App() {
                 Book Appointment
               </button>
             </div>
+
+            {/* INTERACTIVE HAMBURGER TOGGLE TRIGGER (Visible Only on Mobile Screens) */}
+            <div className="lg:hidden flex items-center">
+              <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-white focus:outline-none p-1 hover:text-cyan-400 transition cursor-pointer"
+              >
+                {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+              </button>
+            </div>
+
           </div>
+
+          {/* NEW DROP-DOWN MENU LAYOUT FOR MOBILE SMARTPHONES */}
+          {isMobileMenuOpen && (
+            <div className="lg:hidden bg-slate-900 border-t border-slate-800 text-left px-6 py-5 space-y-4 font-medium tracking-wide uppercase text-xs animate-fadeIn">
+              <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-slate-200 hover:text-cyan-400 border-b border-slate-800/40">Home</Link>
+              <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-slate-200 hover:text-cyan-400 border-b border-slate-800/40">About Us</Link>
+              <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-slate-200 hover:text-cyan-400 border-b border-slate-800/40">Our Treatments</Link>
+              <Link to="/reviews" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-slate-200 hover:text-cyan-400 border-b border-slate-800/40">Video Intro</Link>
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block py-2 text-slate-200 hover:text-cyan-400 pb-2">Reviews & Contact</Link>
+              
+              <div className="pt-2">
+                <button
+                  onClick={() => { setIsMobileMenuOpen(false); setIsModalOpen(true); }}
+                  className="w-full text-center bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 rounded-lg text-xs tracking-wider transition uppercase"
+                >
+                  Book Appointment Form
+                </button>
+              </div>
+            </div>
+          )}
         </nav>
 
-        {/* Viewport Render Panel */}
+        {/* Route Switching viewport */}
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home openModal={() => setIsModalOpen(true)} />} />
@@ -155,28 +176,28 @@ export default function App() {
           </Routes>
         </main>
 
-        {/* Floating Quick Assistance Tool */}
+        {/* Floating WhatsApp Bubble Action Tool */}
         <a
           href="https://api.whatsapp.com/send?phone=918883261285&text=Hi%20Doctor%2C%20I%20want%20to%20book%20a%20dental%20consultation%20with%20RK%20Dental%20Care."
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition duration-300 z-50 flex items-center justify-center group"
+          className="fixed bottom-6 right-6 bg-green-500 text-white p-3.5 md:p-4 rounded-full shadow-2xl hover:bg-green-600 transition duration-300 z-50 flex items-center justify-center group"
         >
-          <MessageSquare className="w-6 h-6" />
+          <MessageSquare className="w-5 h-5 md:w-6 md:h-6" />
           <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-out whitespace-nowrap ml-0 group-hover:ml-2 font-medium text-sm">
             Chat with us
           </span>
         </a>
 
         {/* Global Footer Layout */}
-        <footer className="bg-slate-950 text-slate-400 pt-16 pb-8 px-4 border-t border-slate-900 mt-auto">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 mb-12">
-            <div className="md:col-span-4 space-y-3">
+        <footer className="bg-slate-950 text-slate-400 pt-16 pb-8 px-6 md:px-4 border-t border-slate-900 mt-auto">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 mb-12">
+            <div className="md:col-span-4 space-y-3 text-left">
               <h3 className="text-white font-bold text-lg tracking-wide">RK DENTAL CARE</h3>
               <p className="text-xs leading-relaxed text-slate-400">Providing premium, patient-friendly dental services in Kalavai since 2018. Your smile is our ultimate priority.</p>
               <p className="text-xs text-amber-400 font-semibold">Dr. V. Radhakrishnan BDS., D.Endo.</p>
             </div>
-            <div className="md:col-span-3 space-y-3">
+            <div className="md:col-span-3 space-y-3 text-left">
               <h3 className="text-white font-bold text-sm uppercase tracking-wider">Navigation</h3>
               <ul className="space-y-2 text-xs">
                 <li><Link to="/" className="hover:text-cyan-400 transition">Home Layout</Link></li>
@@ -185,7 +206,7 @@ export default function App() {
                 <li><Link to="/contact" className="hover:text-cyan-400 transition">Reviews & Contact</Link></li>
               </ul>
             </div>
-            <div className="md:col-span-5 space-y-4">
+            <div className="md:col-span-5 space-y-4 text-left">
               <h3 className="text-white font-bold text-sm uppercase tracking-wider">Our Branch Locations</h3>
               <div className="grid grid-cols-1 gap-4 text-xs font-light text-slate-400">
                 <div className="space-y-1 bg-slate-900/50 p-3 rounded-lg border border-slate-800/60">
@@ -204,54 +225,31 @@ export default function App() {
           </div>
         </footer>
 
-        {/* Interactive Booking Modal Form Overlay */}
+        {/* Booking Overlay Modal form */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-[100]">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden relative">
               <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition"><X size={20} /></button>
-              
-              <div className="bg-cyan-700 text-white p-6">
+              <div className="bg-cyan-700 text-white p-6 text-left">
                 <h3 className="text-xl font-bold">Book an Appointment</h3>
                 <p className="text-cyan-100 text-xs mt-1">Fill out the fields below and our clinical team will confirm your slot layout directly over WhatsApp.</p>
               </div>
-              
-              <form onSubmit={handleModalSubmit} className="p-6 space-y-4">
+              <form onSubmit={handleModalSubmit} className="p-6 space-y-4 text-left">
                 <div>
                   <label className="block text-xs font-semibold text-slate-600 mb-1 tracking-wider uppercase">Patient Name</label>
-                  <input 
-                    type="text" 
-                    name="patientName" 
-                    required 
-                    className="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-cyan-500" 
-                    placeholder="Your Full Name" 
-                  />
+                  <input type="text" name="patientName" required className="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-cyan-500" placeholder="Your Full Name" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-600 mb-1 tracking-wider uppercase">Contact Number</label>
-                  <input 
-                    type="tel" 
-                    name="patientPhone" 
-                    required 
-                    className="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-cyan-500" 
-                    placeholder="Mobile Number" 
-                  />
+                  <input type="tel" name="patientPhone" required className="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-cyan-500" placeholder="Mobile Number" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-600 mb-1 tracking-wider uppercase">Preferred Treatment</label>
-                  <select 
-                    name="treatment" 
-                    className="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:outline-none focus:border-cyan-500 cursor-pointer"
-                  >
+                  <select name="treatment" className="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white focus:outline-none focus:border-cyan-500 cursor-pointer">
                     {menuTreatments.map((t, i) => <option key={i} value={t.name}>{t.name}</option>)}
                   </select>
                 </div>
-                
-                <button 
-                  type="submit" 
-                  className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-2.5 rounded transition text-sm tracking-wide mt-2 cursor-pointer"
-                >
-                  SUBMIT RESERVATION
-                </button>
+                <button type="submit" className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-2.5 rounded transition text-sm tracking-wide mt-2 cursor-pointer">SUBMIT RESERVATION</button>
               </form>
             </div>
           </div>
